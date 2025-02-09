@@ -10,6 +10,13 @@ const gallery = document.querySelector('.gallery');
 const loader = document.getElementById('loader');
 let lightbox = new SimpleLightbox('.gallery a');
 
+function showLoader() {
+document.getElementById('loader').classList.add('show');
+}
+function hideLoader() {
+document.getElementById('loader').classList.remove('show');
+}
+hideLoader();
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const query = input.value.trim();
@@ -21,10 +28,8 @@ form.addEventListener('submit', async (event) => {
         });
         return;
     }
-
-    loader.classList.remove('hidden');
     gallery.innerHTML = '';
-
+    showLoader();
     try {
         const images = await fetchImages(query);
 
@@ -35,8 +40,10 @@ form.addEventListener('submit', async (event) => {
             });
             return;
         }
-
-    renderGallery(images);
+    setTimeout(() => {
+        hideLoader();
+        renderGallery(images);
+}, 500); 
     lightbox.refresh();
     } catch (error) {
         iziToast.error({
@@ -44,6 +51,7 @@ form.addEventListener('submit', async (event) => {
             message: 'Щось пішло не так! Спробуйте ще раз.',
         });
     } finally {
-        loader.classList.add('hidden');
+        
     }
 });
+hideLoader();
