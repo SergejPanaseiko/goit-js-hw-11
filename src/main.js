@@ -16,6 +16,7 @@ document.getElementById('loader').classList.add('show');
 function hideLoader() {
 document.getElementById('loader').classList.remove('show');
 }
+
 hideLoader();
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -40,18 +41,17 @@ form.addEventListener('submit', async (event) => {
             });
             return;
         }
-    setTimeout(() => {
         hideLoader();
         renderGallery(images);
-}, 500); 
-    lightbox.refresh();
+        lightbox.refresh();
     } catch (error) {
+        loader.style.display = "none"; 
         iziToast.error({
             title: 'Помилка',
             message: 'Щось пішло не так! Спробуйте ще раз.',
         });
     } finally {
-        
+        loader.style.display = "none";
     }
 });
 hideLoader();
